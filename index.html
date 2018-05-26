@@ -16,5 +16,18 @@
     <script src="grapesjs-preset-webpage.min.js"></script>
     <script src="grapesjs-plugin-export.min.js"></script>
     <script src="grapesjs-blocks-basic.min.js"></script>
+    <script>
+        var editor = grapesjs.init({
+            fromElement: 1,
+            container: '#gjs',
+            storageManager: {
+                id: 'gjs-',
+                type: 'local',
+                autosave: true,
+                autoload: true,
+                stepBeforeSave: 1
+            }
+        });
+    </script>
 </body>
 </html>
