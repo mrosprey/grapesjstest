@@ -46,6 +46,58 @@
             label: 'Form',
             content: '<form style="padding: 50px;"><div><label>First Name</label><input type="text"></div><div><label>Last Name</label><input type="text"></div><div><button type="submit">Submit</button></div></form>'
         });
+
+        // Get DomComponents module
+        var comps = editor.DomComponents;
+
+        // Get the model and the view from the default Component type
+        var defaultType = comps.getType('default');
+        var defaultModel = defaultType.model;
+        var defaultView = defaultType.view;
+
+        var inputTypes = [
+          {value: 'text', name: 'Text'},
+          {value: 'email', name: 'Email'},
+          {value: 'password', name: 'Password'},
+          {value: 'number', name: 'Number'},
+        ];
+
+        // The `input` will be the Component type ID
+        comps.addType('input', {
+          // Define the Model
+          model: defaultModel.extend({
+            // Extend default properties
+            defaults: Object.assign({}, defaultModel.prototype.defaults, {
+              // Traits (Settings)
+              traits: ['name', 'placeholder', {
+                  // Change the type of the input (text, password, email, etc.)
+                  type: 'select',
+                  label: 'Type',
+                  name: 'type',
+                  options: inputTypes,
+                },{
+                  // Can make it required for the form
+                  type: 'checkbox',
+                  label: 'Required',
+                  name: 'required',
+              }],
+            }),
+          },
+          // The second argument of .extend are static methods and we'll put inside our
+          // isComponent() method. As you're putting a new Component type on top of the stack,
+          // not declaring isComponent() might probably break stuff, especially if you extend
+          // the default one.
+          {
+            isComponent: function(el) {
+              if(el.tagName == 'INPUT'){
+                return {type: 'input'};
+              }
+            },
+          }),
+
+          // Define the View
+          view: defaultType.view
+        });
     </script>
 </body>
 </html>
